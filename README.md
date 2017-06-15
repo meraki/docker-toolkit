@@ -28,11 +28,11 @@ Docker is also great for updating containers, you should be able to just do:
 
 ## Current quirks
 
-*networks are made in batches of 4, so if you ask for 10 - you should get 12
-*sometimes networks don't get made (should be a small %)
-*it binds to the first template in the org (alphabetically)
-*created networks are wireless networks
-*reset deletes all networks in the org (use a test org)
+* networks are made in batches of 4, so if you ask for 10 - you should get 12
+* sometimes networks don't get made (should be a small %)
+* it binds to the first template in the org (alphabetically)
+* created networks are wireless networks
+* reset deletes all networks in the org (use a test org)
 
 
 
