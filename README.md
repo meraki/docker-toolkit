@@ -5,7 +5,7 @@ Network-maker is a simple web app for making networks and binding them to templa
 
 It's available as a docker container that will host locally on port 3000.  After [installing docker](https://docs.docker.com/engine/installation/#time-based-release-schedule), simply run:
 
-`docker run -p 3000:3000 whitlow/meraki:deploy`
+`docker run -p 3000:3000 whitlow/meraki`
 
 You should then be able to access it with your browser at http://localhost:3000/config.html
 
@@ -19,5 +19,21 @@ It currently will make however many networks you tell it, in the org you tell it
 
 ### Reset
 This will delete **EVERY NETWORK** in the org - so make sure to use a test org for demos. 
+
+## Updating
+
+Docker is also great for updating containers, you should be able to just do:
+
+`docker pull whitlow/meraki` 
+
+## Current quirks
+
+*networks are made in batches of 4, so if you ask for 10 - you should get 12
+*sometimes networks don't get made (should be a small %)
+*it binds to the first template in the org (alphabetically)
+*created networks are wireless networks
+*reset deletes all networks in the org (use a test org)
+
+
 
 
