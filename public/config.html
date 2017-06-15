@@ -1,0 +1,104 @@
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="/js.cookie.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <style>
+        .top-space { margin-top:2em; }
+    </style>
+
+    <script>
+
+        $.wait = function(ms) {
+            var defer = $.Deferred();
+            setTimeout(function() { defer.resolve(); }, ms);
+            return defer;
+        };
+
+        $(document).ready(function() {
+
+            $("#api-key").val(Cookies.get("api-key"));
+            $("#org-id").val(Cookies.get("org-id"));
+            $("#network-prefix").val(Cookies.get("network-prefix"));
+            $("#network-qty").val(Cookies.get("network-qty"));
+
+            $("button").click(function(){
+                Cookies.set('api-key', $("#api-key").val());
+                Cookies.set('org-id', $("#org-id").val());
+                Cookies.set('network-prefix', $("#network-prefix").val());
+                Cookies.set('network-qty', $("#network-qty").val());
+            });
+
+
+            $("form").submit(function(event) {
+                event.preventDefault();
+            });
+
+        });
+    </script>
+</head>
+
+<body>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="https://dashboard.meraki.com/api_docs">Meraki API</a>
+            </div>
+            <ul class="nav navbar-nav pull-right">
+            <li><a href="/deploy.html">Deploy</a></li>
+            <li><a href="/reset.html">Reset</a></li>
+            <li  class="active"><a href="/config.html">Configure</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    
+
+    <div class="container">
+        <div class="jumbotron text-center">
+            <div class="row">
+            <h1>Config Stuff</h1>
+            </div>
+        
+            <form>
+                <div class="row top-space">
+                    <div class="form-group">
+                        <label class="pull-left" for="api-key">Api key:</label>
+                        <input type="text" class="form-control" id="api-key">
+                    </div>
+                    <div class="form-group">
+                        <label  class="pull-left" for="org-id">Org id:</label>
+                        <input type="text" class="form-control" id="org-id">
+                    </div>
+                    <div class="form-group">
+                        <label  class="pull-left" for="network-prefix">Network name prefix:</label>
+                        <input type="text" class="form-control" id="network-prefix">
+                    </div>
+                    <div class="form-group">
+                        <label  class="pull-left" for="network-qty">Network qty to build:</label>
+                        <input type="text" class="form-control" id="network-qty">
+                    </div>
+                </div>
+
+                <div class="row top-space">
+                    <div class="col-sm-12 text-center">   
+                        <button id="save" class="btn btn-lg btn-success">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+        
+    </div>
+
+    
+    <p></p>
+</body>
+
+
+</html>

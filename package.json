@@ -1,0 +1,15 @@
+{
+  "name": "network_deployment_easy_button",
+  "version": "1.0.1",
+  "description": "Simple demo for provisioning api",
+  "author": "David Whitlow <dawhitlo@cisco.com>",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.13.3",
+    "js-cookie": "^2.1.4",
+    "request":"^2.81.0"
+  }
+}
