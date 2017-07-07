@@ -7,6 +7,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/js.cookie.js"></script>
+    <script src="/meraki_api.js"></script>
+    <script src="/network_maker.js"></script>
+    
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
@@ -14,164 +17,14 @@
     </style>
 
     <script>
-        var org_id = Cookies.get("org-id");
-        var api_key = Cookies.get("api-key");
-        var network_name_prefix = Cookies.get("network-prefix");
-        var network_qty = Cookies.get("network-qty");
-
-        $.wait = function(ms) {
-            var defer = $.Deferred();
-            setTimeout(defer.resolve, ms);
-            return defer;
-        };
-
-        var api_url = "http://localhost:3000/go/api/v0";
-        var req_headers = {'X-Cisco-Meraki-API-Key': api_key, 'ContentType': 'application/json'};
-
-        var templates_url = api_url + "/organizations/" + org_id + "/configTemplates";
-        var networks_url = api_url + "/organizations/" + org_id + "/networks";
-        
-        var network_bind_url = function(network) {
-            return api_url + "/networks/" + network.id + "/bind"
-        }
-
-        var get_templates = function(cb) {
-            $.ajax({
-                url: templates_url,
-                complete: function(result) {
-                    console.log("get templates");
-                    cb(result.responseJSON);
-                }
-            });
-        }
-
-        var create_network = function(params, cb) {
-            $.ajax({
-                method: "POST",
-                url: networks_url,
-                data: JSON.stringify(params),
-                dataType: "json",
-                success: function(network) {
-                    log_table("'" + network.name + "' network created");
-                    console.log("created network");
-                    cb(network);
-                },
-                error: function(result, status) {
-                    
-                    if (result.status == 429) {
-                        //too many requests
-                        console.log("error creating network, going too fast, retrying...");
-                        $.wait(1000).then(function() {
-                            create_network(params,cb);
-                        })
-                    } else if (result.status == 0) {
-                        //too many requests
-                        console.log("error creating network, going too fast, retrying...");
-                        $.wait(1000).then(function() {
-                            create_network(params,cb);
-                        })
-                    } else {
-                        console.log("create network error status:\t" + status);
-                        console.dir(result);
-                    }
-                }
-            });
-        }
-
-        var bind_network_to_template = function(network,template,cb) {
-            $.ajax({
-                method: "POST",
-                url: network_bind_url(network),
-                data: JSON.stringify({
-                    "configTemplateId": template.id
-                }),
-                
-                success: function(data,status) {
-                    console.log("bound network");
-                    log_table("'" + network.name + "' bound to '" + template.name + "' template");
-                    cb(data);
-                },
-
-                error: function(result,status) {
-                    console.log("error binding network, retrying...");
-                    $.wait(1000).then(function() {
-                        bind_network_to_template(network,template,cb)
-                    });
-                }
-            });
-        }
-
-        function log_table(message) {
-            $("table > tbody:last-child").append('<tr><td>' + message + '</td></tr>');
-            $("tr:last").delay(3000).fadeOut(1000);
-        }
-
         $(document).ready(function() {
-
             $("#deploy-prompt").text("Configure " + network_qty + " networks");
 
-            $.ajaxSetup({
-                    headers: {'X-Cisco-Meraki-API-Key': api_key},
-                    contentType: 'application/json; charset=utf-8',
-            })
-
-            $("#test").click(function(){
-                    $.wait(3000).then(function(){log_table("test message")});
-            })
-
             $("#easy").click(function(){
-                //$(this).fadeOut(300).delay(800).fadeIn(500);
                 //get a template from the org
-
                 get_templates(function (templates) {
-                    //print the stuff
-                    console.log(templates[0]);
-
-                    //make a networks
-    
-                    function recur_create_network(i) {
-                        if (i <= network_qty) {
-                            var wait_time = 10
-
-                            create_network({
-                                "name": network_name_prefix + " " + i,
-                                "type": "wireless"
-                            }, function(network) {
-                                $.wait(wait_time).then(
-                                    function() {
-                                        bind_network_to_template(network,templates[0], function(response) {
-                                            recur_create_network(i + 3);
-                                        })
-                                    }
-                                )
-                            })
-
-                            create_network({
-                                "name": network_name_prefix + " " + (i+1),
-                                "type": "wireless"
-                            }, function(network) {
-                                $.wait(wait_time).then(
-                                    function() {
-                                        bind_network_to_template(network,templates[0], function(response){})
-                                    }
-                                )
-                            })
-
-                            create_network({
-                                "name": network_name_prefix + " " + (i+2),
-                                "type": "wireless"
-                            }, function(network) {
-                                $.wait(wait_time).then(
-                                    function() {
-                                        bind_network_to_template(network,templates[0], function(response){})
-                                    }
-                                )
-                            })
-
-                        }
-                    }
-
-                    recur_create_network(1);
+                    //make networks and bind to the first template
+                    recur_create_and_bind_networks(1,templates[0]);
                 });
             });
         });

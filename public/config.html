@@ -7,6 +7,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/js.cookie.js"></script>
+    <script src="/meraki_api.js"></script>
+    <script src="/network_maker.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
@@ -14,19 +16,12 @@
     </style>
 
     <script>
-
-        $.wait = function(ms) {
-            var defer = $.Deferred();
-            setTimeout(function() { defer.resolve(); }, ms);
-            return defer;
-        };
-
         $(document).ready(function() {
 
-            $("#api-key").val(Cookies.get("api-key"));
-            $("#org-id").val(Cookies.get("org-id"));
-            $("#network-prefix").val(Cookies.get("network-prefix"));
-            $("#network-qty").val(Cookies.get("network-qty"));
+            $("#api-key").val(api_key);
+            $("#org-id").val(org_id);
+            $("#network-prefix").val(network_name_prefix);
+            $("#network-qty").val(network_qty);
 
             $("button").click(function(){
                 Cookies.set('api-key', $("#api-key").val());
@@ -34,7 +29,6 @@
                 Cookies.set('network-prefix', $("#network-prefix").val());
                 Cookies.set('network-qty', $("#network-qty").val());
             });
-
 
             $("form").submit(function(event) {
                 event.preventDefault();

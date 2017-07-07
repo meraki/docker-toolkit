@@ -7,6 +7,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script src="/js.cookie.js"></script>
+    <script src="/meraki_api.js"></script>
+    <script src="/network_maker.js"></script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <style>
@@ -14,126 +17,21 @@
     </style>
 
     <script>
-        var org_id = Cookies.get("org-id");
-        var api_key = Cookies.get("api-key");
-
-        $.wait = function(ms) {
-            var defer = $.Deferred();
-            setTimeout(function() { defer.resolve(); }, ms);
-            return defer;
-        };
-
-        var api_url = "http://localhost:3000/go/api/v0";
-        var req_headers = {'X-Cisco-Meraki-API-Key': api_key, 'ContentType': 'application/json'};
-
-        var templates_url = api_url + "/organizations/" + org_id + "/configTemplates";
-        var networks_url = api_url + "/organizations/" + org_id + "/networks";
-        
-        var network_bind_url = function(network) {
-            return api_url + "/networks/" + network.id + "/bind";
-        }
-
-        var network_delete_url = function(network) {
-            return api_url + "/networks/" + network.id;
-        }
-
-        function log_table(message) {
-            $("table > tbody:last-child").append('<tr><td>' + message + '</td></tr>');
-            $("tr:last").delay(3000).fadeOut(1000);
-        }
-
-        var get_templates = function(cb) {
-            $.ajax({
-                url: templates_url,
-                complete: function(result) {
-                    //$("p").html(result.responseText);
-                    console.log("get templates");
-                    cb(result.responseJSON);
-                }
-            });
-        }
-
-        var create_network = function(params, cb) {
-            $.ajax({
-                method: "POST",
-                url: networks_url,
-                data: JSON.stringify(params),
-                dataType: "json",
-                complete: function(result) {
-                    //$("p").html(result.responseText);
-                    console.log("create network");
-                    cb(result.responseJSON);
-                }
-            });
-        }
-
-        var bind_network_to_template = function(network,template,cb) {
-            $.ajax({
-                method: "POST",
-                url: network_bind_url(network),
-                data: JSON.stringify({
-                    "configTemplateId": template.id
-                }),
-                dataType: "json",
-                complete: function(result) {
-                    //$("p").html(result.responseText);
-                    console.log("bind network");
-                    cb(result.responseJSON);
-                }
-            });
-        }
-
-        var get_networks = function(cb) {
-            $.ajax({
-                url: networks_url,
-                complete: function(result) {
-                    //$("p").html(result.responseText);
-                    console.log("get networks");
-                    cb(result.responseJSON);
-                }
-            });
-        }
-
-        var delete_network = function(network,cb) {
-            $.ajax({
-                method: "DELETE",
-                url: network_delete_url(network),
-                dataType: "json",
-                complete: function(result) {
-                    log_table("deleted network: " + network.name);
-                    console.log("deleted network");
-                    cb(result.responseJSON);
-                }
-            });
-        }
-
         $(document).ready(function() {
-            $.ajaxSetup({
-                    headers: {'X-Cisco-Meraki-API-Key': api_key},
-                    contentType: 'application/json; charset=utf-8',
-            })
-
             $("button").click(function(){
-                //$(this).fadeOut(300).delay(800).fadeIn(500);
-                //get a template from the org
-
                 //get networks
                 get_networks(function (networks) {
-
                     function recur_delete(networks,i) {
                         if (i < networks.length) {
                             //delete network
+                            log_table("Deleting network '" + networks[i].name + "'")
                             delete_network(networks[i], function(resp) {
                                 recur_delete(networks,i+1);
                             })
                         } 
                     }
-
                     recur_delete(networks,0);
                 });
-                
-                //delete each network
-                
             });
         });
     </script>
