@@ -26,10 +26,9 @@ Docker is also great for updating containers, you should be able to just do:
 
 `docker pull whitlow/meraki` 
 
-## Current quirks
+## Current behavior
 
-* networks are made in batches of 4, so if you ask for 10 - you should get 12
-* sometimes networks don't get made (should be a small %)
+* networks are now made in batches of 3, so if you ask for 10 - you should get 12
 * it binds to the first template in the org (alphabetically)
 * created networks are wireless networks
 * reset deletes all networks in the org (use a test org)
