@@ -51,11 +51,29 @@
                 url: networks_url,
                 data: JSON.stringify(params),
                 dataType: "json",
-                complete: function(result) {
-                    network = result.responseJSON
+                success: function(network) {
                     log_table("'" + network.name + "' network created");
-                    console.log("create network");
-                    cb(result.responseJSON);
+                    console.log("created network");
+                    cb(network);
+                },
+                error: function(result, status) {
+                    
+                    if (result.status == 429) {
+                        //too many requests
+                        console.log("error creating network, going too fast, retrying...");
+                        $.wait(1000).then(function() {
+                            create_network(params,cb);
+                        })
+                    } else if (result.status == 0) {
+                        //too many requests
+                        console.log("error creating network, going too fast, retrying...");
+                        $.wait(1000).then(function() {
+                            create_network(params,cb);
+                        })
+                    } else {
+                        console.log("create network error status:\t" + status);
+                        console.dir(result);
+                    }
                 }
             });
         }
@@ -67,11 +85,18 @@
                 data: JSON.stringify({
                     "configTemplateId": template.id
                 }),
-                dataType: "json",
-                complete: function(result) {
-                    console.log("bind network");
+                
+                success: function(data,status) {
+                    console.log("bound network");
                     log_table("'" + network.name + "' bound to '" + template.name + "' template");
-                    cb(result.responseJSON);
+                    cb(data);
+                },
+
+                error: function(result,status) {
+                    console.log("error binding network, retrying...");
+                    $.wait(1000).then(function() {
+                        bind_network_to_template(network,template,cb)
+                    });
                 }
             });
         }
@@ -106,7 +131,7 @@
     
                     function recur_create_network(i) {
                         if (i <= network_qty) {
-                            var wait_time = 1000
+                            var wait_time = 10
 
                             create_network({
                                 "name": network_name_prefix + " " + i,
@@ -115,7 +140,7 @@
                                 $.wait(wait_time).then(
                                     function() {
                                         bind_network_to_template(network,templates[0], function(response) {
-                                            recur_create_network(i + 4);
+                                            recur_create_network(i + 3);
                                         })
                                     }
                                 )
@@ -143,16 +168,6 @@
                                 )
                             })
 
-                            create_network({
-                                "name": network_name_prefix + " " + (i+3),
-                                "type": "wireless"
-                            }, function(network) {
-                                $.wait(wait_time).then(
-                                    function() {
-                                        bind_network_to_template(network,templates[0], function(response){})
-                                    }
-                                )
-                            })
                         }
                     }
 
