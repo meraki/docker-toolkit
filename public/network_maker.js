@@ -15,12 +15,12 @@ function log_table(message) {
 }
 
 function create_and_bind_network(network,template,cb) {
-    log_table("Creating network '" + network.name + "'");
     create_network(network, function(network) {
         $.wait(wait_time).then(
             function() {
-                log_table("Binding '" + network.name + "' to '" + template.name + "' template");
+                log_table("Created network '" + network.name + "'");
                 bind_network_to_template(network,template, function(response) {
+                    log_table("Bound '" + network.name + "' to '" + template.name + "' template");
                     cb();
                 });
             }
@@ -28,7 +28,9 @@ function create_and_bind_network(network,template,cb) {
     })
 }
 
-function recur_create_and_bind_networks(i,template) {
+function recur_create_and_bind_networks(template,i) {
+    i = (typeof i !== 'undefined') ?  i : 1;
+
     if (i <= network_qty) {
         for (x = 0; x < batch_size; x++) {
             new_network = {
@@ -39,7 +41,7 @@ function recur_create_and_bind_networks(i,template) {
             if (x==0) {
                 create_and_bind_network(new_network, template, 
                     function() {
-                        recur_create_and_bind_networks(i + batch_size,template);
+                        recur_create_and_bind_networks(template,i + batch_size);
                     }
                 )
             } else {
