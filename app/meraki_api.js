@@ -15,8 +15,12 @@ export default class MerakiApi {
         }
     }
 
+    get_api_resource(resource){
+        return fetch(this.api_url + resource, this.fetch_init())
+    }
+
     get_organizations() {
-        return fetch(this.api_url + "/organizations", this.fetch_init())
+        return this.get_api_resource("/organizations")
     }
 
 }

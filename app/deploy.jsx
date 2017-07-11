@@ -5,6 +5,8 @@ import ReactDom from 'react-dom'
 
 import MerakiApi from './meraki_api'
 
+import {Button} from 'react-bootstrap'
+
 export default class Deploy extends React.Component {
 
     constructor(props) {
@@ -22,7 +24,10 @@ export default class Deploy extends React.Component {
 
     render() {
         return (
-            <div>herro{}</div>
+            <div>
+                <div>herro{}</div>
+                <Button bsStyle="primary">Click me</Button>
+            </div>
         )
     }
 }
