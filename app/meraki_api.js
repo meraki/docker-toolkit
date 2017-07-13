@@ -1,4 +1,4 @@
-
+var JSONbig = require('json-bigint')({"storeAsString": true});
 
 export default class MerakiApi {
 
@@ -16,11 +16,19 @@ export default class MerakiApi {
     }
 
     get_api_resource(resource){
-        return fetch(this.api_url + resource, this.fetch_init())
+        return fetch(this.api_url + resource, this.fetch_init()).then((response) => {
+            return response.text();
+        }).then((text) => {
+            return JSONbig.parse(text);
+        })
     }
 
     get_organizations() {
         return this.get_api_resource("/organizations")
+    }
+
+    get_templates(org) {
+        return this.get_api_resource("/organizations/" + org.id + "/configTemplates")
     }
 
 }
