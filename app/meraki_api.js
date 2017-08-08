@@ -3,9 +3,30 @@ var JSONbig = require('json-bigint')({"storeAsString": true});
 export default class MerakiApi {
 
     constructor() {
+        //this stuff should get passed in so the dependency is cleaner
         this.org_id = Cookies.get("org-id");
         this.api_key = Cookies.get("api-key");
         this.api_url = "http://localhost:3000/api/v0";
+    }
+
+    set_container_component(component) {
+        this.container_component = component;
+    }
+
+    update_container_component() {
+        if (typeof this.container_component != 'undefined') {
+            this.container_component.setState({meraki_api: this})
+        }
+    }
+
+    get_api_key() {
+        return this.api_key;
+    }
+
+    set_api_key(key) {
+        Cookies.set("api-key",key);
+        this.api_key = Cookies.get("api-key");
+        this.update_container_component();
     }
 
     fetch_init() {

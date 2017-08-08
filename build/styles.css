@@ -1,0 +1,9 @@
+
+.borderless {
+    border: 0px;
+    box-shadow: none;
+}
+
+.pad-bottom {
+    padding-bottom: 15px;
+}
