@@ -6,7 +6,7 @@ export default class MerakiApi {
         //this stuff should get passed in so the dependency is cleaner
         this.org_id = Cookies.get("org-id");
         this.api_key = Cookies.get("api-key");
-        this.api_url = "http://localhost:3000/api/v0";
+        this.api_url = "/go/api/v0";
     }
 
     set_container_component(component) {
@@ -29,10 +29,15 @@ export default class MerakiApi {
         this.update_container_component();
     }
 
+    //actual meraki api stuff
+
+    //abstract utils
     fetch_init() {
         return {
-            headers: {'X-Cisco-Meraki-API-Key': this.api_key},
-            contentType: 'application/json; charset=utf-8'
+            headers: {
+                'X-Cisco-Meraki-API-Key': this.api_key,
+                'Content-Type': 'application/json; charset=UTF-8'
+            }
         }
     }
 
@@ -44,12 +49,37 @@ export default class MerakiApi {
         })
     }
 
+    put_api_resource(resource,payload) {
+        let fetch_config = this.fetch_init();
+        fetch_config.method = 'PUT';    
+        fetch_config.body = JSON.stringify(payload);
+
+        return fetch(this.api_url + resource, fetch_config).then((response) => {
+            return response.text();
+        }).then((text) => {
+            return JSONbig.parse(text);
+        })
+    }
+
+    //api wrappers
     get_organizations() {
         return this.get_api_resource("/organizations")
     }
 
     get_templates(org) {
         return this.get_api_resource("/organizations/" + org.id + "/configTemplates")
+    }
+
+    get_networks(org) {
+        return this.get_api_resource("/organizations/" + org.id + "/networks")
+    }
+
+    get_devices(network) {
+        return this.get_api_resource("/networks/" + network.id + "/devices")
+    }
+
+    update_device(device) {
+        return this.put_api_resource("/networks/" + device.networkId + "/devices/" + device.serial, device)
     }
 
 }

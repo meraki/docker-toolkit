@@ -39,7 +39,7 @@ export default class Deploy extends React.Component {
     }
 
     componentWillUpdate() {
-        this.load_orgs();
+        //this.load_orgs();
     }
 
     // event handling functions here
@@ -112,7 +112,7 @@ export default class Deploy extends React.Component {
             <FormGroup controlId="network_qty_text">
                     <ControlLabel>Network qty</ControlLabel>
                     <FormControl
-                        type="text"
+                        componentClass="textarea"
                         value={this.state.network_qty}
                         placeholder="Enter how many networks to make"
                         onChange={this.update_network_qty}
@@ -142,7 +142,7 @@ export default class Deploy extends React.Component {
                 </Row>
                 <Row>
                     <Col xs={12} className="text-center">
-                        <Button bsStyle="success" bsSize="large" >Make and Bind</Button>
+                        <Button bsStyle="success" >Make and Bind</Button>
                     </Col>
                 </Row>
             </Panel>

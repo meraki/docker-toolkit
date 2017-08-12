@@ -4,6 +4,8 @@ import ReactDom from 'react-dom'
 
 import Deploy from './deploy.jsx'
 import Config from './config.jsx'
+import NetworkAdressChanger from './network_address_changer.jsx'
+
 import MerakiApi from './meraki_api'
 import NavHeader from './components/nav_header.jsx'
 
@@ -24,6 +26,7 @@ class App extends React.Component {
             <div>
                 <NavHeader />
                 <Config api={this.state.meraki_api} />
+                <NetworkAdressChanger api={this.state.meraki_api} />
                 <Deploy api={this.state.meraki_api} />
             </div>
         )

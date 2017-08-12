@@ -12,7 +12,8 @@ export default class Config extends React.Component{
         super(props);
 
         this.state = {
-            api_key: props.api.get_api_key()
+            api_key: props.api.get_api_key(),
+            api_key_changed: false
         }
 
         this.update_api_key = this.update_api_key.bind(this);
@@ -21,10 +22,16 @@ export default class Config extends React.Component{
 
     save_api_key(e) {
         this.props.api.set_api_key(this.state.api_key);
+        this.setState({
+            api_key_changed: false
+        })
     }
 
     update_api_key(e) {
-        this.setState({api_key: e.target.value})
+        this.setState({
+            api_key: e.target.value,
+            api_key_changed: (e.target.value != this.props.api.get_api_key())
+        })
     }
 
     api_key_textbox() {
@@ -41,6 +48,19 @@ export default class Config extends React.Component{
         )
     }
 
+    api_key_save_button() {
+        if (this.state.api_key_changed) {
+            return (
+                <Button bsStyle="danger" onClick={this.save_api_key}>Save key</Button>
+            )
+        } else {
+            return (
+                <Button bsStyle="success">Key saved</Button>
+            )
+        }
+        
+    }
+
     config_panel() {
         return (
             <Panel header="Configure api key">
@@ -51,7 +71,7 @@ export default class Config extends React.Component{
                 </Row>
                 <Row className="pad-bottom">
                     <Col xs={12} className="text-center">
-                        <Button bsStyle="danger" bsSize="large" onClick={this.save_api_key}>Update</Button>
+                        {this.api_key_save_button()}
                     </Col>
                 </Row>
             </Panel>

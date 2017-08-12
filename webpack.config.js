@@ -20,9 +20,10 @@ var config = {
             index: 'index.html'
         },
         proxy: {
-            '/api/**': {
-                target: 'http://localhost:3001/go',
+            '/go/api/**': {
+                target: 'http://localhost:3001/',
                 secure: false,
+                changeOrigin: true,
                 logLevel: 'debug'
             }
         }
