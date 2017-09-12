@@ -55,9 +55,15 @@ export default class MerakiApi {
         fetch_config.body = JSON.stringify(payload);
 
         return fetch(this.api_url + resource, fetch_config).then((response) => {
+            console.log(response);
             return response.text();
         }).then((text) => {
             return JSONbig.parse(text);
+        }).catch((err) => {
+            console.log(err);
+            console.log(resource);
+            console.log(payload);
+            //this.put_api_resource(resource,payload);
         })
     }
 
