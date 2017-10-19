@@ -19,12 +19,24 @@ var config = {
         historyApiFallback: {
             index: 'index.html'
         },
+        // proxy: {
+        //     '/go/api/**': {
+        //         target: 'http://localhost:3001/',
+        //         secure: false,
+        //         changeOrigin: true,
+        //         logLevel: 'debug'
+        //     }
+        // }
         proxy: {
-            '/go/api/**': {
-                target: 'http://localhost:3001/',
+            '/api/**': {
+                target: 'https://dashboard.meraki.com/',
                 secure: false,
                 changeOrigin: true,
                 logLevel: 'debug'
+                // onProxyRes: (proxyres, req, resp) => {
+                //     resp2 = proxyres;
+                //     console.log(resp2);
+                // }
             }
         }
     },

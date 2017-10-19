@@ -6,7 +6,12 @@ export default class MerakiApi {
         //this stuff should get passed in so the dependency is cleaner
         this.org_id = Cookies.get("org-id");
         this.api_key = Cookies.get("api-key");
-        this.api_url = "/go/api/v0";
+        // this.api_url = "/go/api/v0";
+        this.api_url = "/api/v0";
+    }
+
+    get_random_number(min, max) {
+        return Math.random() * (max - min) + min;
     }
 
     set_container_component(component) {
@@ -43,27 +48,49 @@ export default class MerakiApi {
 
     get_api_resource(resource){
         return fetch(this.api_url + resource, this.fetch_init()).then((response) => {
+            
+            console.log(response.status);
+            console.log(response);
+            
             return response.text();
         }).then((text) => {
             return JSONbig.parse(text);
         })
     }
 
-    put_api_resource(resource,payload) {
+    put_api_resource(resource, payload, retry_count=0) {
         let fetch_config = this.fetch_init();
         fetch_config.method = 'PUT';    
         fetch_config.body = JSON.stringify(payload);
 
         return fetch(this.api_url + resource, fetch_config).then((response) => {
-            console.log(response);
+            //console.log(response);
+            if (!response.ok) {
+                throw Error("fetch not ok!");
+            }
             return response.text();
         }).then((text) => {
+            console.log("retries to success: " + retry_count);
             return JSONbig.parse(text);
         }).catch((err) => {
-            console.log(err);
-            console.log(resource);
-            console.log(payload);
-            //this.put_api_resource(resource,payload);
+            //console.log(err);
+            //console.log(resource);
+            //console.log(payload);
+
+            let random_wait = this.get_random_number(2000,10000);
+
+            if (retry_count > 5) {
+                console.log("too many retries");
+            } else {
+                //console.log("retry: " + retry_count);
+                console.log("retrying in: " + (random_wait / 1000));
+
+                setTimeout(() => {
+                    //console.log("stop wait " + random_wait);
+                    this.put_api_resource(resource,payload,retry_count + 1);
+                }, random_wait);
+            }
+            
         })
     }
 

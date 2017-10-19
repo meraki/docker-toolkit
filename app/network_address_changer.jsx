@@ -86,6 +86,19 @@ export default class NetworkAddressChanger extends React.Component{
         )
     }
 
+    log_stuff() {
+        console.log("start");
+        setTimeout(() => {
+            console.log("stop");
+        },3000.123);
+    }
+
+    test_button() {
+        return (
+            <Button bsStyle="danger" onClick={this.log_stuff}>Test stuff </Button>
+        )
+    }
+
     network_address_change_panel() {
         return (
             <Panel header="Address changer">
@@ -103,6 +116,9 @@ export default class NetworkAddressChanger extends React.Component{
                     </Col>
                     <Col xs={6} className="text-center vertical-align">
                         {this.update_address_button()}
+                    </Col>
+                    <Col xs={6} className="text-center vertical-align">
+                        {this.test_button()}
                     </Col>
                 </Row>
             </Panel>
