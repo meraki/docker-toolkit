@@ -6,7 +6,6 @@ export default class MerakiApi {
         //this stuff should get passed in so the dependency is cleaner
         this.org_id = Cookies.get("org-id");
         this.api_key = Cookies.get("api-key");
-        // this.api_url = "/go/api/v0";
         this.api_url = "/api/v0";
     }
 
@@ -34,8 +33,13 @@ export default class MerakiApi {
         this.update_container_component();
     }
 
-    //actual meraki api stuff
+    test_log(log) {
+        if (typeof this.container_component != 'undefined') {
+            this.container_component.log(log);
+        }
+    }
 
+    //actual meraki api stuff
     //abstract utils
     fetch_init() {
         return {
@@ -48,10 +52,6 @@ export default class MerakiApi {
 
     get_api_resource(resource){
         return fetch(this.api_url + resource, this.fetch_init()).then((response) => {
-            
-            console.log(response.status);
-            console.log(response);
-            
             return response.text();
         }).then((text) => {
             return JSONbig.parse(text);
@@ -85,12 +85,15 @@ export default class MerakiApi {
                 //console.log("retry: " + retry_count);
                 console.log("retrying in: " + (random_wait / 1000));
 
-                setTimeout(() => {
-                    //console.log("stop wait " + random_wait);
-                    this.put_api_resource(resource,payload,retry_count + 1);
-                }, random_wait);
+                var promise = new Promise((resolve) => {
+                    setTimeout(() => {
+                        //console.log("stop wait " + random_wait);
+                        resolve(this.put_api_resource(resource,payload,retry_count + 1));
+                    }, random_wait);
+                })
+
+                return promise;
             }
-            
         })
     }
 

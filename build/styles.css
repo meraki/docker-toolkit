@@ -7,3 +7,8 @@
 .pad-bottom {
     padding-bottom: 15px;
 }
+
+.log-table {
+    max-height: 500px;
+    overflow: auto;
+}
