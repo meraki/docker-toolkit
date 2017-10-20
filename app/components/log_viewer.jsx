@@ -14,9 +14,6 @@ export default class LogViewer extends React.Component {
         return (
             <div className="log-table">
                 <Table striped bordered condensed hover>
-                    <thead>
-                        <tr><th>Displaying {this.props.logs.length} messages</th></tr>
-                    </thead>
                     <tbody>
                         {this.props.logs.map((log,index) => {
                             return <tr key={index}><td>{log}</td></tr>
@@ -30,19 +27,22 @@ export default class LogViewer extends React.Component {
     render() {
         return (
             <div>
-                <Grid>
-                    <Row>
-                        <Col xs={12} >
-                            <Panel header={
-                                <div>
-                                    <span>logs</span>
-                                    <Button onClick={this.props.on_clear_logs} className="pull-right">clear</Button>
-                                </div>}>
-                                {this.log_table()}
-                            </Panel>
-                        </Col>
-                    </Row>
-                </Grid>
+                <Col xs={12} md={6} >
+                    <Panel header={
+                        <Row>
+                            <Col xs={2}>
+                                <span>Logs</span>
+                            </Col>
+                            <Col xs={6}>
+                                <span>{this.props.logs.length} messages</span>
+                            </Col>
+                            <Col xs={4}>
+                                <Button onClick={this.props.on_clear_logs} className="pull-right ">clear</Button>
+                            </Col>
+                        </Row>}>
+                        {this.log_table()}
+                    </Panel>
+                </Col>
             </div>
         );
     }

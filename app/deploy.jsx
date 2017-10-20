@@ -153,13 +153,9 @@ export default class Deploy extends React.Component {
     render() {
         return (
             <div>
-                <Grid>
-                    <Row >
-                        <Col xs={12} md={9} lg={6}>
-                            {this.config_panel()}
-                        </Col>
-                    </Row>
-                </Grid>
+                <Col xs={12} md={6} >
+                    {this.config_panel()}
+                </Col>
             </div>
         )
     }

@@ -159,13 +159,9 @@ export default class NetworkAddressChanger extends React.Component{
 
     render() {
         return (
-            <Grid>
-                <Row >
-                    <Col xs={12} md={9} lg={6}>
-                        {this.network_address_change_panel()}
-                    </Col>
-                </Row>
-            </Grid>
+            <Col xs={12} md={6} >
+                {this.network_address_change_panel()}
+            </Col>
         )
     }
 

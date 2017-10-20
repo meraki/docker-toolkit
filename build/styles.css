@@ -12,3 +12,7 @@
     max-height: 500px;
     overflow: auto;
 }
+
+.margin-bottom {
+    margin-bottom: 15px;
+}

@@ -9,6 +9,7 @@ import NetworkAdressChanger from './network_address_changer.jsx'
 import MerakiApi from './meraki_api'
 import NavHeader from './components/nav_header.jsx'
 import LogViewer from './components/log_viewer.jsx'
+import {Grid, Row} from 'react-bootstrap';
 
 
 class App extends React.Component {
@@ -74,10 +75,12 @@ class App extends React.Component {
         return (
             <div>
                 <NavHeader on_select_tools={this.update_selected_tools} selected_tools={this.state.selected_tools} />
-                {this.config_panel()}
-                {this.network_address_changer()}
-                {this.network_maker()}
-                {this.log_viewer()}
+                <Grid>
+                    {this.config_panel()}
+                    {this.network_address_changer()}
+                    {this.network_maker()}
+                    {this.log_viewer()}
+                </Grid>
             </div>
         )
     }
