@@ -5,7 +5,7 @@
   "author": "David Whitlow <dawhitlo@cisco.com>",
   "main": "server.js",
   "scripts": {
-    "start": "webpack-dev-server",
+    "start": "webpack-dev-server --host=0.0.0.0",
     "build": "webpack",
     "dev": "webpack-dev-server"
   },
