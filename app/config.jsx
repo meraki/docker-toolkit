@@ -63,7 +63,7 @@ export default class Config extends React.Component{
 
     config_panel() {
         return (
-            <Panel header="Configure api key">
+            <Panel header="Configure API key">
                 <Row className="pad-bottom">
                     <Col xs={12}>
                         {this.api_key_textbox()}

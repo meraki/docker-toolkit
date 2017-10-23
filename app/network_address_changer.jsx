@@ -129,7 +129,7 @@ export default class NetworkAddressChanger extends React.Component{
 
     network_address_change_panel() {
         return (
-            <Panel header="Address changer">
+            <Panel header="Change addresses">
                 <Row className="pad-bottom">
                     <Col xs={6}>
                         <OrganizationSelector api={this.props.api} onSelect={this.select_org} />
