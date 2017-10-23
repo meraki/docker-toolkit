@@ -23,7 +23,13 @@ class App extends React.Component {
         this.state = {
             meraki_api: new MerakiApi,
             logs: [],
-            selected_tools: ["config","network_address_changer"]
+            selected_tools: ["config","network_address_changer","log_viewer"],
+            selectable_tools: [
+                { component_name: "config", display_text: "Configure" },
+                { component_name: "network_address_changer", display_text: "Change addresses" },
+                { component_name: "log_viewer", display_text: "Show logs" }
+                // { component_name: "network_maker", display_text: "Make/bind networks" }
+            ]
         }
         
         this.state.meraki_api.set_container_component(this);
@@ -74,11 +80,15 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <NavHeader on_select_tools={this.update_selected_tools} selected_tools={this.state.selected_tools} />
+                <NavHeader 
+                    on_select_tools={this.update_selected_tools} 
+                    selected_tools={this.state.selected_tools} 
+                    selectable_tools={this.state.selectable_tools}    
+                />
                 <Grid>
                     {this.config_panel()}
                     {this.network_address_changer()}
-                    {this.network_maker()}
+                    { /*this.network_maker() */}
                     {this.log_viewer()}
                 </Grid>
             </div>

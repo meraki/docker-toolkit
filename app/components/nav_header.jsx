@@ -14,7 +14,7 @@ export default class NavHeader extends React.Component {
         return (
             <Navbar inverse staticTop>
                 <Navbar.Brand>
-                    <a href="">Meraki API</a>
+                    <a href="">Meraki API toolbox</a>
                 </Navbar.Brand>
                 <Navbar.Toggle />
 
@@ -25,10 +25,9 @@ export default class NavHeader extends React.Component {
                             value={this.props.selected_tools}
                             onChange={this.props.on_select_tools}
                         >
-                            <ToggleButton value={"config"}>Configure</ToggleButton>
-                            <ToggleButton value={"network_address_changer"}>Change addresses</ToggleButton>
-                            <ToggleButton value={"network_maker"}>Make/bind networks</ToggleButton>
-                            <ToggleButton value={"log_viewer"} >Show logs</ToggleButton>
+                            { this.props.selectable_tools.map((tool) => {
+                                return <ToggleButton value={tool.component_name}>{tool.display_text}</ToggleButton>
+                            })}
                         </ToggleButtonGroup>
                     </Navbar.Form>
                 </Navbar.Collapse>
