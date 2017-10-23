@@ -11,6 +11,14 @@ It's available as a docker container that will host locally on port 80.  After [
 
 You should then be able to access it with your browser at http://localhost/
 
+## Getting stopped
+
+To stop the docker container you'll need the container ID.  Get it by running:
+`docker ps`
+
+Once you have that you can stop it by running 'docker stop [container_id]'.  It should look something like this:
+`docker stop cd04fbb33586`
+
 ## Tools in the box
 
 ### Configure
