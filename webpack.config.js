@@ -15,7 +15,7 @@ var config = {
     devServer: {
         inline: true,
         contentBase: BUILD_DIR,
-        port: 3000,
+        port: 80,
         historyApiFallback: {
             index: 'index.html'
         },
@@ -25,6 +25,7 @@ var config = {
                 secure: false,
                 changeOrigin: true,
                 logLevel: 'debug'
+                
             }
         }
     },

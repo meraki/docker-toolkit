@@ -7,7 +7,7 @@ The tools are all written in react with a plain javascript API library for talki
 
 It's available as a docker container that will host locally on port 80.  After [installing docker](https://docs.docker.com/engine/installation/#time-based-release-schedule), simply run:
 
-`docker run -p 80:3000 whitlow/meraki-api-toolbox`
+`docker run -p 80:80 whitlow/meraki-api-toolbox`
 
 You should then be able to access it with your browser at http://localhost/
 
