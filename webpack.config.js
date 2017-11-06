@@ -1,5 +1,8 @@
 var webpack = require('webpack')
 var path = require('path')
+var fetch = require('node-fetch')
+var https = require("https");
+var body_parser = require("body-parser");
 
 var BUILD_DIR = path.resolve(__dirname + '/build')
 var APP_DIR = path.resolve(__dirname + '/app')
@@ -19,14 +22,33 @@ var config = {
         historyApiFallback: {
             index: 'index.html'
         },
-        proxy: {
-            '/api/**': {
-                target: 'https://dashboard.meraki.com/',
-                secure: false,
-                changeOrigin: true,
-                logLevel: 'debug'
-                
-            }
+        before: function(app) {
+            app.use(body_parser.json());
+
+            app.all('/api/**', function(req,res) {
+                fetch_config = {
+                    method: req.method,
+                    headers: req.headers,
+                    body: JSON.stringify(req.body),
+                    agent: new https.Agent({
+                        rejectUnauthorized: false
+                    })
+                }
+
+                fetch('https://dashboard.meraki.com/' + req.originalUrl,fetch_config).then((response) => {
+                    return response.json();
+                }).then((data) => {
+                    console.log({data: data});
+                    res.json(data);
+                })
+            });
+
+            app.get('/data', function(req,res) {
+                res.json({
+                    name: "data name",
+                    number: 1234
+                })
+            });
         }
     },
     module: {
@@ -42,6 +64,7 @@ var config = {
             }
         ]
     }
+    
 }
 
 module.exports = config

@@ -16,7 +16,12 @@
     "react-dom": "^15.6.1",
     "request": "^2.81.0",
     "react-bootstrap": "latest",
-    "json-bigint": "latest"
+    "json-bigint": "latest",
+    "webpack": "^3.1.0",
+    "webpack-dev-server": "^2.5.1",
+    "node-fetch": "latest",
+    "https": "latest",
+    "body-parser": "latest"
   },
   "devDependencies": {
     "babel-cli": "^6.24.1",
