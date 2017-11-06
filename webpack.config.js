@@ -36,17 +36,9 @@ var config = {
                 }
 
                 fetch('https://dashboard.meraki.com/' + req.originalUrl,fetch_config).then((response) => {
-                    return response.json();
-                }).then((data) => {
-                    console.log({data: data});
-                    res.json(data);
-                })
-            });
-
-            app.get('/data', function(req,res) {
-                res.json({
-                    name: "data name",
-                    number: 1234
+                    response.json().then((body) => {
+                        res.status(response.status).json(body)
+                    })                    
                 })
             });
         }

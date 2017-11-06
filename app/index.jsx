@@ -77,13 +77,6 @@ class App extends React.Component {
         }
     }
 
-    test_panel() {
-        this.state.meraki_api.get_organizations().then((orgs) => {
-            console.log(orgs);
-        });
-        return <div/>
-    }
-
     render() {
         return (
             <div>
@@ -97,7 +90,6 @@ class App extends React.Component {
                     {this.network_address_changer()}
                     { /*this.network_maker() */}
                     {this.log_viewer()}
-                    {this.test_panel()}
                 </Grid>
             </div>
         )

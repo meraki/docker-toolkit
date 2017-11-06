@@ -26,7 +26,7 @@ export default class NavHeader extends React.Component {
                             onChange={this.props.on_select_tools}
                         >
                             { this.props.selectable_tools.map((tool) => {
-                                return <ToggleButton value={tool.component_name}>{tool.display_text}</ToggleButton>
+                                return <ToggleButton key={tool.component_name} value={tool.component_name}>{tool.display_text}</ToggleButton>
                             })}
                         </ToggleButtonGroup>
                     </Navbar.Form>

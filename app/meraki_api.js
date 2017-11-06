@@ -6,7 +6,7 @@ export default class MerakiApi {
         //this stuff should get passed in so the dependency is cleaner
         this.org_id = Cookies.get("org-id");
         this.api_key = Cookies.get("api-key");
-        this.api_url = "/np/v0";
+        this.api_url = "/api/v0";
     }
 
     get_random_number(min, max) {
